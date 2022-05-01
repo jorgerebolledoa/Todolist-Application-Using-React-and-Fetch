@@ -1,36 +1,41 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 
 function TODO() {
 	const [lista, setlista] = useState([]);
-	const [contador, setcontador] = useState(0);
 
-	const crear = () => {
-		setlista(lista.concat(<li>{contador}</li>));
+	const crear = (e) => {
+		if (e.keyCode === 13 && e.target.value !== "") {
+			setlista([...lista, e.target.value]);
+			e.target.value = "";
+		}
 	};
-	//aca debo crear un li
-	const atras = () => {
-		setcontador(contador + 1);
-		//aca debo borrar la li creada
-	};
+
 	return (
-		<div className="container mt-3">
+		<div className="container bg-warning text-dark m-2  rounded align-items-center">
 			<div className="row">
-				<div className="col-md-8 mx-auto text-center">
-					<ol className="rounded bg-primary">{lista}</ol>
-					<div className="m-2">
-						<button
-							className="btn-sm  rounded-circle p-2 m-0 bg-secondary border-0 m-1"
-							onClick={crear}
-							id="boton">
-							<i class="fas fa-arrow-circle-left"></i>
-						</button>
-						<button
-							className="btn-sm  rounded-circle p-2 m-0  border-0 m-1"
-							onClick={atras}
-							id="boton">
-							<i class="fas fa-arrow-circle-left"></i>
-						</button>
-					</div>
+				<div className="col-md-12 mt-2 mb-1">
+					<h1>
+						<strong>To do list</strong>
+					</h1>
+					<input
+						type="text"
+						className="form-control border border-secondary bg-warning text-dark rounded-0"
+						onKeyUp={crear}
+					/>
+				</div>
+				<div className="col-md-12 ">
+					<ul className="list-group list-group-flush bg-warning text-dark">
+						{lista.length > 0 &&
+							lista.map((tastk, index) => {
+								return (
+									<li
+										className="list-group-item bg-warning text-dark"
+										key={index}>
+										{tastk}
+									</li>
+								);
+							})}
+					</ul>
 				</div>
 			</div>
 		</div>
