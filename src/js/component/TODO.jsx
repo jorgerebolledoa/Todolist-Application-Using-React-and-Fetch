@@ -44,11 +44,6 @@ function TODO() {
 		updateTask(urlApi, [...lista]);
 	};
 
-	const borrar = () => {
-		setlista([]);
-		updateTask(urlApi, []);
-	};
-
 	return (
 		<div className="container bg-warning text-dark m-2  rounded align-items-center">
 			<div className="row">
