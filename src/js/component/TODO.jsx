@@ -9,15 +9,9 @@ function TODO() {
 			e.target.value = "";
 		}
 	};
-	const Delete = (index) => {
+	const deletelist = (index) => {
 		lista.splice(index, 1);
 		setlista([...lista]);
-
-		// nuevo array
-		task.splice(index, 1);
-		setTask([...task]);
-		updateTask(urlApi, task);
-		//
 	};
 	const borrar = () => {
 		setlista([]);
@@ -47,7 +41,9 @@ function TODO() {
 										{tastk}
 										<i
 											className="fas fa-trash float-end"
-											onClick={borrar}></i>
+											onClick={() =>
+												deletelist(index)
+											}></i>
 									</li>
 								);
 							})}
@@ -55,6 +51,8 @@ function TODO() {
 					<div id="passwordHelpBlock" class="form-text">
 						{lista.length == 0 ? (
 							"Agrega una tarea"
+						) : lista.length == 1 ? (
+							<p>hay una tarea pendiente</p>
 						) : (
 							<p>hay {lista.length} tareas pendientes</p>
 						)}
