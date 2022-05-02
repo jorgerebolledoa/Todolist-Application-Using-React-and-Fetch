@@ -1,20 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function TODO() {
 	const [lista, setlista] = useState([]);
 
+	const urlApi =
+		"https://assets.breatheco.de/apis/fake/todos/user/jorgerebolledo";
+
+	useEffect(() => {
+		getTask(urlApi);
+	}, []);
+
+	const getTask = (url) => {
+		fetch(url)
+			.then((Response) => Response.json())
+			.then((data) => console.log(data))
+			.catch((error) => console.log(error));
+	};
+
+	const updateTask = (url, task) => {
+		fetch(url, {
+			method: "PUT",
+			body: JSON.stringify(task),
+			headers: {
+				"content-type": "application/json",
+			},
+		})
+			.then((response) => response.json())
+			.then((data) => console.log(data))
+			.catch((error) => console.log(error));
+	};
+
 	const crear = (e) => {
 		if (e.keyCode === 13 && e.target.value !== "") {
-			setlista([...lista, e.target.value]);
+			let newlist = [...lista, { label: e.target.value, done: true }];
+			setlista(newlist);
+			updateTask(urlApi, newlist);
 			e.target.value = "";
 		}
 	};
 	const deletelist = (index) => {
 		lista.splice(index, 1);
 		setlista([...lista]);
+		updateTask(urlApi, [...lista]);
 	};
+
 	const borrar = () => {
 		setlista([]);
+		updateTask(urlApi, []);
 	};
 
 	return (
@@ -38,7 +70,7 @@ function TODO() {
 									<li
 										className="list-group-item bg-warning text-dark"
 										key={index}>
-										{tastk}
+										{tastk.label}
 										<i
 											className="fas fa-trash float-end"
 											onClick={() =>
@@ -48,22 +80,17 @@ function TODO() {
 								);
 							})}
 					</ul>
-					<div id="passwordHelpBlock" class="form-text">
+					<div id="passwordHelpBlock" className="form-text">
 						{lista.length == 0 ? (
-							"Agrega una tarea"
+							<p className="m-2">Agrega una tarea</p>
 						) : lista.length == 1 ? (
-							<p>hay una tarea pendiente</p>
+							<p className="m-3">hay una tarea pendiente</p>
 						) : (
-							<p>hay {lista.length} tareas pendientes</p>
+							<p className="m-3">
+								hay {lista.length} tareas pendientes
+							</p>
 						)}
 					</div>
-
-					<button
-						type="button"
-						class="btn btn-dark text-warning mb-2 mt-2"
-						onClick={borrar}>
-						Borrar todo
-					</button>
 				</div>
 			</div>
 		</div>
